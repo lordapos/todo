@@ -10,21 +10,27 @@ const app = new Vue({
       day: this.todoDay(),
       date: new Date().getDate(),
       ord: this.nth(new Date().getDate()),
-      year: new Date().getFullYear() };
+      year: new Date().getFullYear()
+    };
 
   },
   methods: {
     addTodo() {
-      var value = this.newTodo && this.newTodo.trim();
-      if (!value) {
+      const title = this.newTodo && this.newTodo.trim();
+      if (!title) {
         return;
       }
-
-      this.todos.push({
-        title: this.newTodo,
-        done: false });
-
-      this.newTodo = '';
+      fetch('/api/todo', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({title})
+      })
+          .then(res => res.json())
+          .then(({todo}) => {
+            this.todos.push(todo)
+            this.newTodo = '';
+          })
+          .catch(e => console.log(e))
     },
     removeTodo(index) {
       this.todos.splice(index, 1);
@@ -49,4 +55,25 @@ const app = new Vue({
       if (!value) return '';
       value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
-    } } });
+    },
+    date(value, withTime) {
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit'
+      }
+
+      if (withTime) {
+        options.hour = '2-digit'
+        options.minute = '2-digit'
+        options.second = '2-digit'
+      }
+      return new Intl.DateTimeFormat('ru-RU', options).format(new Date(value))
+    }
+  } });
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+});
