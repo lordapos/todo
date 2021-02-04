@@ -37,7 +37,7 @@ router.put('/:id', async (req, res) => {
         const todo = await Todo.findByPk(+req.params.id)
         todo.done = req.body.done
         await todo.save()
-        res.status(201).json({todo})
+        res.status(200).json({todo})
     } catch (e) {
         console.log(e)
         res.status(500).json({
@@ -47,9 +47,11 @@ router.put('/:id', async (req, res) => {
 })
 
 // Delete to-do item
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
-
+        const todo = await Todo.findByPk(+req.params.id)
+        await todo.destroy()
+        res.status(204).json({})
     } catch (e) {
         console.log(e)
         res.status(500).json({

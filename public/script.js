@@ -42,8 +42,14 @@ const app = new Vue({
           })
           .catch(e => console.log(e))
     },
-    removeTodo(index) {
-      this.todos.splice(index, 1);
+    removeTodo(id) {
+      fetch('/api/todo/' + id, {
+        method: 'delete'
+      })
+          .then(() => {
+            this.todos = this.todos.filter(t => t.id !== id)
+          })
+          .catch(e => console.log(e))
     },
     todoDay() {
       var d = new Date();
@@ -58,7 +64,6 @@ const app = new Vue({
       })
           .then(res => res.json())
           .then(({todo}) => {
-            console.log(todo.updatedAt)
             const idx = this.todos.findIndex(t => t.id === todo.id)
             this.todos[idx].updatedAt = todo.updatedAt
           })

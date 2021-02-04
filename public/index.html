@@ -16,9 +16,8 @@
 	<v-app>
 		<v-main>
 			<v-theme-provider root :dark="isDark">
-				<v-container>
-					<v-row justify="center" class="ma-5">
-						<v-col xs="12" sm="8">
+					<v-row justify="center">
+						<v-col xs="12" sm="12">
 							<v-card>
 								<v-toolbar color="blue darken-4" dark>
 									<v-toolbar-side-icon></v-toolbar-side-icon>
@@ -85,7 +84,7 @@
 													</v-list-item-subtitle>
 												</v-list-item-content>
 												<v-btn fab ripple small color="red" v-if="todo.done"
-													   @click="removeTodo(i)">
+													   @click="removeTodo(todo.id)">
 													<v-icon class="white--text">mdi-close</v-icon>
 												</v-btn>
 											</template>
@@ -95,7 +94,6 @@
 							</v-card>
 						</v-col>
 					</v-row>
-				</v-container>
 			</v-theme-provider>
 		</v-main>
 	</v-app>
