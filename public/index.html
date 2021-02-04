@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css'>
 	<link rel='stylesheet' href='./vuetify.min.css'>
-<!--	<link rel='stylesheet' href='./materialdesignicons.min.css'>-->
+	<!--	<link rel='stylesheet' href='./materialdesignicons.min.css'>-->
 	<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900'>
 	<link rel="stylesheet" href="./style.css">
 </head>
@@ -67,20 +67,24 @@
 											<template #default="{ active, toggle }">
 												<v-list-item-action>
 
-													<v-checkbox v-model="active" @click="toggle"></v-checkbox>
+													<v-checkbox
+															v-model="todo.done"
+															@change="completeTodo(todo.id)"
+													>
+													</v-checkbox>
 												</v-list-item-action>
 
 												<v-list-item-content>
 													<v-list-item-title :class="{
-													  done: active
+													  done: todo.done
 													  }">{{ todo.title | capitalize }}
 													</v-list-item-title>
 													<v-list-item-subtitle>
-														Created: {{ todo.createdAt | date() }}
-														(Updated: {{ todo.updatedAt | date() }})
+														Created: {{ todo.createdAt | date(true) }}
+														(Updated: {{ todo.updatedAt | date(true) }})
 													</v-list-item-subtitle>
 												</v-list-item-content>
-												<v-btn fab ripple small color="red" v-if="active"
+												<v-btn fab ripple small color="red" v-if="todo.done"
 													   @click="removeTodo(i)">
 													<v-icon class="white--text">mdi-close</v-icon>
 												</v-btn>

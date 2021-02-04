@@ -32,9 +32,12 @@ router.post('/', async (req, res) => {
 })
 
 // Update to-do item
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
-
+        const todo = await Todo.findByPk(+req.params.id)
+        todo.done = req.body.done
+        await todo.save()
+        res.status(201).json({todo})
     } catch (e) {
         console.log(e)
         res.status(500).json({

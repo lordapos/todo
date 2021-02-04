@@ -50,6 +50,20 @@ const app = new Vue({
       var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       return days[d.getDay()];
     },
+    completeTodo(id) {
+      fetch('/api/todo/' + id, {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({done: true})
+      })
+          .then(res => res.json())
+          .then(({todo}) => {
+            console.log(todo.updatedAt)
+            const idx = this.todos.findIndex(t => t.id === todo.id)
+            this.todos[idx].updatedAt = todo.updatedAt
+          })
+          .catch(e => console.log(e))
+    },
     nth(d) {
       if (d > 3 && d < 21) return 'th';
       switch (d % 10) {
@@ -78,6 +92,6 @@ const app = new Vue({
         options.minute = '2-digit'
         options.second = '2-digit'
       }
-      return new Intl.DateTimeFormat('en-US', options).format(new Date(value))
+      return new Intl.DateTimeFormat('ru-RU', options).format(new Date(value))
     }
   } });
