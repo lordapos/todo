@@ -10,7 +10,7 @@ app.use(express.json())
 app.use('/api/todo', todoRoutes)
 
 app.use((req, res, next) => {
-    res.sendFile('index.html')
+    res.sendFile('/index.html')
 })
 
 async function start() {

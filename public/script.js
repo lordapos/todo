@@ -14,6 +14,16 @@ const app = new Vue({
     };
 
   },
+  created() {
+    fetch('/api/todo', {
+      method: 'get'
+    })
+        .then(res => res.json())
+        .then(todos => {
+          this.todos = todos.todos
+        })
+        .catch(e => console.log(e))
+  },
   methods: {
     addTodo() {
       const title = this.newTodo && this.newTodo.trim();
@@ -68,12 +78,6 @@ const app = new Vue({
         options.minute = '2-digit'
         options.second = '2-digit'
       }
-      return new Intl.DateTimeFormat('ru-RU', options).format(new Date(value))
+      return new Intl.DateTimeFormat('en-US', options).format(new Date(value))
     }
   } });
-
-Vue.filter('formatDate', function(value) {
-  if (value) {
-    return moment(String(value)).format('MM/DD/YYYY hh:mm')
-  }
-});
